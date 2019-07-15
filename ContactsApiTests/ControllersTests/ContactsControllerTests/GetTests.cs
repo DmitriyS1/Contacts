@@ -5,7 +5,7 @@ using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ContactsApiTests
+namespace ContactsApiTests.ControllersTests.ContactsControllerTests
 {
     public class GetTests : ContactsTestFixture
     {
@@ -18,7 +18,7 @@ namespace ContactsApiTests
 
             var response = await ControllerMock.Get("5d2b5b105c20853204e52c8a");
 
-            Assert.IsType<OkResult>(response);
+            Assert.IsType<OkObjectResult>(response);
         }
 
         [Fact]

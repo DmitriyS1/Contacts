@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
+using Contacts.DTO.Requests;
 using ContactsApi.Dal.Repositories;
 using ContactsApi.Dal.Repositories.Interfaces;
 using ContactsApi.MappingProfiles;
+using ContactsApi.Services;
+using ContactsApi.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +37,12 @@ namespace ContactsCRUD
             });
             services.AddSingleton(mappingConfig.CreateMapper());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddTransient<IValidator<CreateContactModel>, CreateContactModelValidator>();
+
+            services.AddTransient<IContactsService, ContactsService>();
+            services.AddTransient<IContactsRepository, ContactsRepository>();
+
+            services.AddMvc().AddFluentValidation().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(o => o.ApiVersionReader = new HeaderApiVersionReader("api-version"));
 
             services.AddTransient<IContactsRepository, ContactsRepository>();
