@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApi", "ContactsCRUD\ContactsApi.csproj", "{F205450C-9DAF-472E-BDA8-0B454F4DFE27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContactsApi", "ContactsCRUD\ContactsApi.csproj", "{F205450C-9DAF-472E-BDA8-0B454F4DFE27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{5D044CAB-1ACF-4858-A125-B528D253AAF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contacts.DTO", "Contacts.DTO\Contacts.DTO.csproj", "{ABDD988E-1C56-4047-8A65-7F3EC2100A08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contacts.DTO", "Contacts.DTO\Contacts.DTO.csproj", "{ABDD988E-1C56-4047-8A65-7F3EC2100A08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contacts.Core", "Contacts.Core\Contacts.Core.csproj", "{04126133-ECD2-4699-BCD6-FF366E43954D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contacts.Core", "Contacts.Core\Contacts.Core.csproj", "{04126133-ECD2-4699-BCD6-FF366E43954D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3F0B0F55-0C44-4BF8-8481-D712D5D3C25A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactsApiTests", "ContactsApiTests\ContactsApiTests.csproj", "{F7CACD1E-1C06-45E1-9117-3ADD62A2E274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +33,10 @@ Global
 		{04126133-ECD2-4699-BCD6-FF366E43954D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04126133-ECD2-4699-BCD6-FF366E43954D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04126133-ECD2-4699-BCD6-FF366E43954D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7CACD1E-1C06-45E1-9117-3ADD62A2E274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CACD1E-1C06-45E1-9117-3ADD62A2E274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CACD1E-1C06-45E1-9117-3ADD62A2E274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7CACD1E-1C06-45E1-9117-3ADD62A2E274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +44,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{ABDD988E-1C56-4047-8A65-7F3EC2100A08} = {5D044CAB-1ACF-4858-A125-B528D253AAF9}
 		{04126133-ECD2-4699-BCD6-FF366E43954D} = {5D044CAB-1ACF-4858-A125-B528D253AAF9}
+		{F7CACD1E-1C06-45E1-9117-3ADD62A2E274} = {3F0B0F55-0C44-4BF8-8481-D712D5D3C25A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B8DE051-52BA-4C61-B9F2-3D4C6C2FCBBA}

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace Contacts.Core.Entities
@@ -11,7 +13,9 @@ namespace Contacts.Core.Entities
         /// <summary>
         /// Идентификатор записи
         /// </summary>
-        public int Id { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public ObjectId Id { get; set; }
 
         /// <summary>
         /// Имя контакта

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using ContactsApi.Dal.Repositories;
+using ContactsApi.Dal.Repositories.Interfaces;
+using ContactsApi.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,8 +26,16 @@ namespace ContactsCRUD
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ContactMappingProfile());
+            });
+            services.AddSingleton(mappingConfig.CreateMapper());
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(o => o.ApiVersionReader = new HeaderApiVersionReader("api-version"));
+
+            services.AddTransient<IContactsRepository, ContactsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
