@@ -1,6 +1,13 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
+using Contacts.Core.Entities;
 using Contacts.DTO.Requests;
+using Contacts.DTO.Responses;
+using ContactsApi.Dal.Repositories.Interfaces;
+using ContactsApi.Exeptions;
+using ContactsApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace ContactsApi.Controllers
 {
@@ -12,17 +19,37 @@ namespace ContactsApi.Controllers
     [Route("api/v{version:apiVersion}/contacts")]
     public class ContactsController : Controller
     {
+        private readonly IContactsRepository _contactsRepository;
+        private readonly IContactsService _contactsService;
+        private readonly IMapper _mapper;
+
+        public ContactsController(
+            IContactsRepository contactsRepository,
+            IContactsService contactsService,
+            IMapper mapper)
+        {
+            _contactsRepository = contactsRepository;
+            _contactsService = contactsService;
+            _mapper = mapper;
+        }
+
         /// <summary>
         /// Получить контакт
         /// </summary>
         /// <param name="id">Идентификатор контакта</param>
         /// <response code="200">Информация о запрошенном контакте</resposne>
-        [ProducesResponseType(200, Type = typeof(ContactInfoResponse))]
-        [ProducesResponseType(404, Type = typeof(ApiError))]
+        /// <response code="404">Контакт не найден</resposne>
         [HttpGet]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
-            return View();
+            var contact = await _contactsRepository.GetAsync(new ObjectId(id));
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(contact);
         }
 
         /// <summary>
@@ -32,7 +59,7 @@ namespace ContactsApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return View();
+            return Ok(await _contactsRepository.GetAllAsync());
         }
 
         /// <summary>
@@ -40,10 +67,20 @@ namespace ContactsApi.Controllers
         /// </summary>
         /// <param name="model">Модель для создания контакта</param>
         /// <response code="200">Контакт успешно создан</response>
+        /// <response code="422">Ошибка в одном или нескольких параметрах</response>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateContactModel model)
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
+
+            var contact = _mapper.Map<Contact>(model);
+
+            await _contactsRepository.CreateAsync(contact);
+
+            return Ok();
         }
 
         /// <summary>
@@ -52,10 +89,27 @@ namespace ContactsApi.Controllers
         /// <param name="id">Идентификатор контакта</param>
         /// <param name="model">Модель для обновления контакта</param>
         /// <response code="200">Контакт успешно обновлен</response>
+        /// <response code="404">Контакт не найден</response>
         [HttpPatch]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateContactModel model) /// JsonMergePatchDocument потому что если поле не передано, не надо апдейтить
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateContactModel model) /// Стоит использовать JsonMergePatchDocument потому что если поле не передано, не надо обновлять
         {
-            return View();
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity();
+            }
+
+            ObjectId updatedId;
+            try
+            {
+                updatedId = await _contactsService.UpdateAsync(new ObjectId(id), model);
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+
+            return Ok(new ContactResponse { Id = updatedId });
         }
 
         /// <summary>
@@ -63,10 +117,21 @@ namespace ContactsApi.Controllers
         /// </summary>
         /// <param name="id">Идентификатор удаляемого контакта</param>
         /// <response code="200">Контакт успешно удален</response>
+        /// <response code="404">Контакт не найден</response>
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] string id)
         {
-            return View();
+            try
+            {
+                await _contactsService.DeleteAsync(new ObjectId(id));
+            }
+            catch (NotFoundException)
+            {
+                return NotFound();
+            }
+
+            return Ok();
         }
     }
 }

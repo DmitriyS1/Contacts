@@ -1,4 +1,6 @@
-﻿namespace Contacts.DTO.Responses
+﻿using MongoDB.Bson;
+
+namespace Contacts.DTO.Responses
 {
     /// <summary>
     /// Ответ, содержащий информацию о контакте
@@ -8,6 +10,6 @@
         /// <summary>
         /// Идентификатор контакта
         /// </summary>
-        public int Id { get; set; }
+        public ObjectId Id { get; set; }
     }
 }
