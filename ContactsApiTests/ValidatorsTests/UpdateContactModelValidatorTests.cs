@@ -5,22 +5,23 @@ using Xunit;
 
 namespace ContactsApiTests.ValidatorsTests
 {
-    public class CreateContactModelValidatorTests
+    public class UpdateContactModelValidatorTests
     {
-        private readonly CreateContactModelValidator _validator;
-        private readonly CreateContactModel _model;
-        
-        public CreateContactModelValidatorTests()
+        private readonly UpdateContactModelValidator _validator;
+        private readonly UpdateContactModel _model;
+
+        public UpdateContactModelValidatorTests()
         {
-            _validator = new CreateContactModelValidator();
-            _model = new CreateContactModel { FirstName = "Jhon", Phone = "+79534316199" };
+            _validator = new UpdateContactModelValidator();
+            _model = new UpdateContactModel();
         }
 
         [Theory]
         [InlineData("")]
-        [InlineData("asdawdadasd")]
-        [InlineData("7361")]
-        public void Should_HaveValidationErrorForPhone(string phone)
+        [InlineData("83247")]
+        [InlineData("fgdfgdfgj")]
+        [InlineData("     ")]
+        public void Should_HaveValidationError_IfPhoneIsNotValid(string phone)
         {
             _model.Phone = phone;
 
@@ -29,9 +30,10 @@ namespace ContactsApiTests.ValidatorsTests
 
         [Theory]
         [InlineData("")]
-        [InlineData("asdawdadasd")]
-        [InlineData("7361")]
-        public void Should_HaveValidationErrorForWorkPhone(string workPhone)
+        [InlineData("83247")]
+        [InlineData("fgdfgdfgj")]
+        [InlineData("     ")]
+        public void Should_HaveValidationError_IfWorkPhoneIsNotValid(string workPhone)
         {
             _model.WorkPhone = workPhone;
 

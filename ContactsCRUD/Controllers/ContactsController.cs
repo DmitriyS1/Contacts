@@ -92,12 +92,13 @@ namespace ContactsApi.Controllers
         /// <response code="404">Контакт не найден</response>
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateContactModel model) /// JsonMergePatchDocument потому что если поле не передано, не надо обновлять
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateContactModel model) /// Стоит использовать JsonMergePatchDocument потому что если поле не передано, не надо обновлять
         {
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity();
             }
+
             ObjectId updatedId;
             try
             {
